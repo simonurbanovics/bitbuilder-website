@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://bitbuilder.tech/en/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bitbuilder.tech/en/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://bitbuilder.tech/hu/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bitbuilder.tech/en/"/>
+  </url>
+  <url>
+    <loc>https://bitbuilder.tech/en/services/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bitbuilder.tech/en/services/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://bitbuilder.tech/hu/services/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bitbuilder.tech/en/services/"/>
+  </url>
+  <url>
+    <loc>https://bitbuilder.tech/en/portfolio/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bitbuilder.tech/en/portfolio/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://bitbuilder.tech/hu/portfolio/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bitbuilder.tech/en/portfolio/"/>
+  </url>
+  <url>
+    <loc>https://bitbuilder.tech/en/about/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bitbuilder.tech/en/about/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://bitbuilder.tech/hu/about/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bitbuilder.tech/en/about/"/>
+  </url>
+  <url>
+    <loc>https://bitbuilder.tech/en/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bitbuilder.tech/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://bitbuilder.tech/hu/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bitbuilder.tech/en/contact/"/>
+  </url>
+  <url>
+    <loc>https://bitbuilder.tech/hu/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bitbuilder.tech/en/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://bitbuilder.tech/hu/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bitbuilder.tech/en/"/>
+  </url>
+  <url>
+    <loc>https://bitbuilder.tech/hu/services/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bitbuilder.tech/en/services/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://bitbuilder.tech/hu/services/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bitbuilder.tech/en/services/"/>
+  </url>
+  <url>
+    <loc>https://bitbuilder.tech/hu/portfolio/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bitbuilder.tech/en/portfolio/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://bitbuilder.tech/hu/portfolio/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bitbuilder.tech/en/portfolio/"/>
+  </url>
+  <url>
+    <loc>https://bitbuilder.tech/hu/about/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bitbuilder.tech/en/about/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://bitbuilder.tech/hu/about/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bitbuilder.tech/en/about/"/>
+  </url>
+  <url>
+    <loc>https://bitbuilder.tech/hu/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bitbuilder.tech/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://bitbuilder.tech/hu/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bitbuilder.tech/en/contact/"/>
+  </url>
+</urlset>
