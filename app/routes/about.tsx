@@ -19,15 +19,26 @@ export default function About() {
   const lang = useLang();
   const t = useT();
   return (
-    <div className="mx-auto max-w-3xl px-6 py-20">
-      <h1 className="font-mono text-4xl font-bold tracking-tight sm:text-5xl">
-        {t.about.title}
-      </h1>
-
-      <div className="mt-8 space-y-6 text-lg text-slate-600 dark:text-slate-300">
-        {t.about.paragraphs.map((paragraph, i) => (
-          <p key={i}>{paragraph}</p>
-        ))}
+    <div className="mx-auto max-w-4xl px-6 py-20">
+      <div className="grid gap-10 md:grid-cols-[minmax(0,240px)_1fr] md:items-start md:gap-12">
+        <img
+          src="/simon-portrait.jpg"
+          alt={t.about.portraitAlt}
+          width={909}
+          height={1000}
+          loading="lazy"
+          className="w-44 rounded-2xl object-cover ring-1 ring-slate-200 md:w-full dark:ring-slate-800"
+        />
+        <div>
+          <h1 className="font-mono text-4xl font-bold tracking-tight sm:text-5xl">
+            {t.about.title}
+          </h1>
+          <div className="mt-6 space-y-6 text-lg text-slate-600 dark:text-slate-300">
+            {t.about.paragraphs.map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="mt-12 rounded-xl border border-slate-200 p-8 dark:border-slate-800">

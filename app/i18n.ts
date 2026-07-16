@@ -87,6 +87,7 @@ type Dict = {
   };
   about: {
     title: string;
+    portraitAlt: string;
     paragraphs: string[];
     ctaTitle: string;
     ctaBody: string;
@@ -212,6 +213,7 @@ const en: Dict = {
   },
   about: {
     title: "About",
+    portraitAlt: "Simon Urbanovics, founder of BitBuilder",
     paragraphs: [
       "I'm Simon Urbanovics, founder and lead engineer of BitBuilder — an independent software studio based in Hungary, working remotely with teams anywhere. Over more than a decade I've designed, built, and shipped production software across insurance, logistics, aviation, automotive, retail, and fintech.",
       "My work sits where AI, cloud, and full-stack engineering meet: LLM and machine-learning pipelines that reach production, serverless AWS architectures automated with Terraform, data-engineering pipelines, and the web applications that put it all in front of users. I'm an AWS Certified Machine Learning – Specialty engineer, and I've often been the sole technical owner turning a business problem into a running system.",
@@ -345,6 +347,7 @@ const hu: Dict = {
   },
   about: {
     title: "Rólam",
+    portraitAlt: "Urbanovics Simon, a BitBuilder alapítója",
     paragraphs: [
       "Urbanovics Simon vagyok, a BitBuilder alapítója és vezető mérnöke — egy magyarországi független szoftverstúdióé, amely távolról dolgozik bárhol lévő csapatokkal. Több mint egy évtizede tervezek, építek és szállítok éles szoftvereket a biztosítás, a logisztika, a légi közlekedés, az autóipar, a kiskereskedelem és a fintech területén.",
       "A munkám ott van, ahol az AI, a felhő és a full-stack fejlesztés találkozik: éles környezetig eljutó LLM- és gépitanulás-pipeline-ok, Terraformmal automatizált serverless AWS-architektúrák, adatmérnöki pipeline-ok, és a webalkalmazások, amelyek mindezt a felhasználók elé teszik. AWS Certified Machine Learning – Specialty mérnök vagyok, és gyakran egyedüli technikai felelősként alakítottam egy üzleti problémát működő rendszerré.",
