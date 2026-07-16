@@ -8,3 +8,6 @@
 # React Router
 /.react-router/
 /build/
+
+# Rendered brand assets (regenerate from source — see branding/README.md)
+/branding/*.png
