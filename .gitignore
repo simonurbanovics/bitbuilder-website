@@ -2,6 +2,9 @@
 .env
 /node_modules/
 
+# Editor
+/.idea/
+
 # React Router
 /.react-router/
 /build/
