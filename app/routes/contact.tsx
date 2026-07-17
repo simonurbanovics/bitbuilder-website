@@ -1,8 +1,14 @@
-import { useState } from "react";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { useEffect, useRef, useState } from "react";
 
 import { dict, getLang, localizedMeta, useT } from "~/i18n";
 import { site } from "~/site";
 import type { Route } from "./+types/contact";
+
+// Web3Forms' shared zero-config hCaptcha sitekey — no registration needed.
+// Verification happens server-side by Web3Forms; enable it per-form in the
+// dashboard (already on). See docs.web3forms.com → spam protection → hCaptcha.
+const HCAPTCHA_SITEKEY = "50b2fe65-b00b-4b9e-ad62-3ba471098be2";
 
 export function meta({ params, location }: Route.MetaArgs) {
   const lang = getLang(params.lang);
@@ -21,11 +27,12 @@ export default function Contact() {
   const t = useT();
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string>("");
+  const [captchaToken, setCaptchaToken] = useState("");
+  const captchaRef = useRef<HCaptcha>(null);
+  const captchaTheme = usePrefersDark() ? "dark" : "light";
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setStatus("submitting");
-    setError("");
 
     const formData = new FormData(event.currentTarget);
     // Honeypot: real users leave this empty; bots tend to fill every field.
@@ -33,6 +40,18 @@ export default function Contact() {
       setStatus("success");
       return;
     }
+
+    if (!captchaToken) {
+      setStatus("error");
+      setError(t.contact.captchaRequired);
+      return;
+    }
+    // The widget renders its own hidden input, but we submit via fetch rather
+    // than Web3Forms' client script, so pass the token through explicitly.
+    formData.set("h-captcha-response", captchaToken);
+
+    setStatus("submitting");
+    setError("");
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
@@ -51,6 +70,10 @@ export default function Contact() {
       setStatus("error");
       setError(t.contact.networkError);
     }
+
+    // A token is single-use: clear it so a retry solves a fresh challenge.
+    captchaRef.current?.resetCaptcha();
+    setCaptchaToken("");
   }
 
   return (
@@ -116,6 +139,16 @@ export default function Contact() {
             />
           </Field>
 
+          <HCaptcha
+            ref={captchaRef}
+            sitekey={HCAPTCHA_SITEKEY}
+            reCaptchaCompat={false}
+            theme={captchaTheme}
+            onVerify={setCaptchaToken}
+            onExpire={() => setCaptchaToken("")}
+            onError={() => setCaptchaToken("")}
+          />
+
           {status === "error" ? (
             <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
           ) : null}
@@ -144,6 +177,23 @@ export default function Contact() {
       </p>
     </div>
   );
+}
+
+// The widget can't inherit Tailwind's `dark:` styling, so match it to the OS
+// preference the rest of the page follows. Starts light during prerender.
+function usePrefersDark() {
+  const [prefersDark, setPrefersDark] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-color-scheme: dark)");
+    setPrefersDark(query.matches);
+    const onChange = (event: MediaQueryListEvent) =>
+      setPrefersDark(event.matches);
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }, []);
+
+  return prefersDark;
 }
 
 const inputClass =

@@ -106,6 +106,7 @@ type Dict = {
     successBody: string;
     errorGeneric: string;
     networkError: string;
+    captchaRequired: string;
     otherChannelPre: string;
     otherChannelPost: string;
     subject: string;
@@ -239,6 +240,7 @@ const en: Dict = {
     errorGeneric: "Something went wrong. Please try again.",
     networkError:
       "Network error. Please try again, or reach out on LinkedIn.",
+    captchaRequired: "Please confirm you're human before sending.",
     otherChannelPre: "Prefer another channel? Find me on ",
     otherChannelPost: ".",
     subject: "New enquiry via BitBuilder website",
@@ -372,6 +374,7 @@ const hu: Dict = {
     errorGeneric: "Valami hiba történt. Kérjük, próbálja újra.",
     networkError:
       "Hálózati hiba. Kérjük, próbálja újra, vagy keressen a LinkedInen.",
+    captchaRequired: "Kérem, erősítse meg, hogy nem robot.",
     otherChannelPre: "Inkább más csatornán? Megtalál a ",
     otherChannelPost: " oldalon.",
     subject: "Új megkeresés a BitBuilder weboldaláról",
