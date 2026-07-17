@@ -14,5 +14,5 @@ export const site = {
   // Web3Forms public access key. Get one free at https://web3forms.com
   // (enter your email; submissions are forwarded there). This key is public by
   // design and safe to commit — it only allows *sending* to your inbox.
-  web3formsAccessKey: "YOUR_WEB3FORMS_ACCESS_KEY",
+  web3formsAccessKey: "cb7fa8aa-b311-4d5b-86cf-b0a2bdc670bc",
 } as const;
