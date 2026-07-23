@@ -53,6 +53,26 @@ export function localizedMeta(
 }
 
 // ---------------------------------------------------------------------------
+// Locale-aware money formatting. Guards against an invalid currency code
+// arriving from a query param (Intl throws a RangeError on unknown codes).
+// ---------------------------------------------------------------------------
+export function formatMoney(lang: Lang, currency: string, amount: number): string {
+  const locale = lang === "hu" ? "hu-HU" : "en-US";
+  try {
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  } catch {
+    const n = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(
+      amount,
+    );
+    return `${n} ${currency}`;
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Translations. `dict.hu` is a draft for Simon (native speaker) to review.
 // ---------------------------------------------------------------------------
 type Item = { title: string; body: string };
@@ -110,6 +130,31 @@ type Dict = {
     otherChannelPre: string;
     otherChannelPost: string;
     subject: string;
+    metaDesc: string;
+  };
+  calculator: {
+    title: string;
+    intro: string;
+    daysLabel: string;
+    daysHint: string;
+    presetLabel: string;
+    presets: { days: number; label: string }[];
+    commitmentLabel: string;
+    tiers: {
+      annual: string;
+      halfYear: string;
+      quarter: string;
+      month: string;
+      daily: string;
+    };
+    rateLabel: string;
+    perDay: string;
+    perYear: string;
+    totalLabel: string;
+    employeeTitle: string;
+    employeeLoadedLabel: string;
+    employeeDeltaLabel: string;
+    employeeNote: string;
     metaDesc: string;
   };
 };
@@ -246,6 +291,39 @@ const en: Dict = {
     subject: "New enquiry via BitBuilder website",
     metaDesc: "Get in touch with BitBuilder about your project.",
   },
+  calculator: {
+    title: "Rate calculator",
+    intro:
+      "Estimate the daily rate for an engagement. The more workdays you commit, the lower the rate — long, stable commitments earn the deepest discount.",
+    daysLabel: "Workdays reserved",
+    daysHint: "How many billable days you plan to commit over the engagement.",
+    presetLabel: "Quick select",
+    presets: [
+      { days: 1, label: "1 day" },
+      { days: 22, label: "1 month" },
+      { days: 65, label: "3 months" },
+      { days: 110, label: "6 months" },
+      { days: 220, label: "1 year" },
+    ],
+    commitmentLabel: "Commitment",
+    tiers: {
+      annual: "Annual",
+      halfYear: "Half-year",
+      quarter: "Quarterly",
+      month: "Monthly",
+      daily: "Short / daily",
+    },
+    rateLabel: "Daily rate",
+    perDay: "/ day",
+    perYear: "/ year",
+    totalLabel: "Contract total",
+    employeeTitle: "Compared to hiring in-house",
+    employeeLoadedLabel: "Equivalent employee, fully loaded",
+    employeeDeltaLabel: "Difference over {days} workdays",
+    employeeNote:
+      "Loaded cost = gross × 12 × 1.13 (employer contribution) ÷ 220 worked days — before paid leave, notice period, equipment, and hiring risk.",
+    metaDesc: "BitBuilder engagement rate calculator.",
+  },
 };
 
 const hu: Dict = {
@@ -379,6 +457,39 @@ const hu: Dict = {
     otherChannelPost: " oldalon.",
     subject: "Új megkeresés a BitBuilder weboldaláról",
     metaDesc: "Vegye fel a kapcsolatot a BitBuilderrel a projektjéről.",
+  },
+  calculator: {
+    title: "Díjkalkulátor",
+    intro:
+      "Becsülje meg egy együttműködés napidíját. Minél több munkanapot köt le, annál alacsonyabb a díj — a hosszú, stabil elköteleződés kapja a legnagyobb kedvezményt.",
+    daysLabel: "Lefoglalt munkanapok",
+    daysHint: "Hány számlázható napot tervez lekötni az együttműködés során.",
+    presetLabel: "Gyorsválasztás",
+    presets: [
+      { days: 1, label: "1 nap" },
+      { days: 22, label: "1 hónap" },
+      { days: 65, label: "3 hónap" },
+      { days: 110, label: "6 hónap" },
+      { days: 220, label: "1 év" },
+    ],
+    commitmentLabel: "Elköteleződés",
+    tiers: {
+      annual: "Éves",
+      halfYear: "Féléves",
+      quarter: "Negyedéves",
+      month: "Havi",
+      daily: "Rövid / napi",
+    },
+    rateLabel: "Napidíj",
+    perDay: "/ nap",
+    perYear: "/ év",
+    totalLabel: "Szerződés összesen",
+    employeeTitle: "Összevetve a saját alkalmazottal",
+    employeeLoadedLabel: "Egyenértékű alkalmazott, teljes költséggel",
+    employeeDeltaLabel: "Különbség {days} munkanapra",
+    employeeNote:
+      "Teljes költség = bruttó × 12 × 1,13 (munkáltatói járulék) ÷ 220 munkanap — a fizetett szabadság, felmondási idő, eszközök és a felvétel kockázata nélkül.",
+    metaDesc: "BitBuilder napidíj-kalkulátor.",
   },
 };
 

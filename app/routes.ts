@@ -16,5 +16,6 @@ export default [
     route("portfolio", "routes/portfolio.tsx"),
     route("about", "routes/about.tsx"),
     route("contact", "routes/contact.tsx"),
+    route("calculator", "routes/calculator.tsx"),
   ]),
 ] satisfies RouteConfig;
