@@ -149,12 +149,7 @@ type Dict = {
     };
     rateLabel: string;
     perDay: string;
-    perYear: string;
     totalLabel: string;
-    employeeTitle: string;
-    employeeLoadedLabel: string;
-    employeeDeltaLabel: string;
-    employeeNote: string;
     metaDesc: string;
   };
 };
@@ -315,13 +310,7 @@ const en: Dict = {
     },
     rateLabel: "Daily rate",
     perDay: "/ day",
-    perYear: "/ year",
     totalLabel: "Contract total",
-    employeeTitle: "Compared to hiring in-house",
-    employeeLoadedLabel: "Equivalent employee, fully loaded",
-    employeeDeltaLabel: "Difference over {days} workdays",
-    employeeNote:
-      "Loaded cost = gross × 12 × 1.13 (employer contribution) ÷ 220 worked days — before paid leave, notice period, equipment, and hiring risk.",
     metaDesc: "BitBuilder engagement rate calculator.",
   },
 };
@@ -482,13 +471,7 @@ const hu: Dict = {
     },
     rateLabel: "Napidíj",
     perDay: "/ nap",
-    perYear: "/ év",
     totalLabel: "Szerződés összesen",
-    employeeTitle: "Összevetve a saját alkalmazottal",
-    employeeLoadedLabel: "Egyenértékű alkalmazott, teljes költséggel",
-    employeeDeltaLabel: "Különbség {days} munkanapra",
-    employeeNote:
-      "Teljes költség = bruttó × 12 × 1,13 (munkáltatói járulék) ÷ 220 munkanap — a fizetett szabadság, felmondási idő, eszközök és a felvétel kockázata nélkül.",
     metaDesc: "BitBuilder napidíj-kalkulátor.",
   },
 };

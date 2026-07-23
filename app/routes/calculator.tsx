@@ -29,10 +29,6 @@ const ANCHORS: readonly [days: number, mult: number][] = [
   [220, 1.0],
 ];
 
-// Employee cost-parity anchor: gross × 12 × (1 + szocho) ÷ worked days.
-const SZOCHO = 0.13;
-const WORKDAYS = 220;
-
 function multiplier(days: number): number {
   const first = ANCHORS[0];
   const last = ANCHORS[ANCHORS.length - 1];
@@ -73,8 +69,6 @@ export default function Calculator() {
   // All config comes from the query string, so one link encodes a full quote.
   const base = Math.max(1, Number(searchParams.get("base")) || 400);
   const currency = (searchParams.get("currency") || "EUR").toUpperCase();
-  const empRaw = Number(searchParams.get("emp"));
-  const emp = empRaw > 0 ? empRaw : null;
 
   const [daysInput, setDaysInput] = useState(searchParams.get("days") ?? "220");
   const hasDays = Number(daysInput) >= 1;
@@ -82,12 +76,6 @@ export default function Calculator() {
 
   const { rate, total } = priceFor(days, base);
   const money = (n: number) => formatMoney(lang, currency, n);
-
-  const loadedDaily = emp != null ? Math.round((emp * 12 * (1 + SZOCHO)) / WORKDAYS) : null;
-  const loadedAnnual = emp != null ? Math.round(emp * 12 * (1 + SZOCHO)) : null;
-  // Contractor total vs. employing someone for the same worked days. Positive
-  // = contractor costs more; negative = contractor is cheaper.
-  const delta = loadedDaily != null ? total - loadedDaily * days : null;
 
   return (
     <div className="mx-auto max-w-2xl px-6 py-20">
@@ -173,48 +161,6 @@ export default function Calculator() {
           </span>
         </div>
       </div>
-
-      {/* Employee comparison (only when ?emp= is supplied) */}
-      {loadedDaily != null && loadedAnnual != null && (
-        <div className="mt-6 rounded-2xl border border-slate-200 p-8 dark:border-slate-800">
-          <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-            {c.employeeTitle}
-          </h2>
-          <div className="mt-4 flex flex-wrap items-baseline justify-between gap-2">
-            <span className="text-sm text-slate-500 dark:text-slate-400">
-              {c.employeeLoadedLabel}
-            </span>
-            <span className="font-mono text-slate-700 dark:text-slate-200">
-              {money(loadedDaily)}{" "}
-              <span className="text-slate-400">{c.perDay}</span>
-              <span className="mx-2 text-slate-300 dark:text-slate-600">·</span>
-              {money(loadedAnnual)}{" "}
-              <span className="text-slate-400">{c.perYear}</span>
-            </span>
-          </div>
-          {hasDays && delta != null && (
-            <div className="mt-3 flex flex-wrap items-baseline justify-between gap-2 border-t border-slate-200 pt-3 dark:border-slate-800">
-              <span className="text-sm text-slate-500 dark:text-slate-400">
-                {c.employeeDeltaLabel.replace("{days}", String(days))}
-              </span>
-              <span
-                className={
-                  "font-mono font-semibold " +
-                  (delta <= 0
-                    ? "text-emerald-600 dark:text-emerald-400"
-                    : "text-slate-700 dark:text-slate-200")
-                }
-              >
-                {delta <= 0 ? "−" : "+"}
-                {money(Math.abs(delta))}
-              </span>
-            </div>
-          )}
-          <p className="mt-4 text-xs text-slate-500 dark:text-slate-400">
-            {c.employeeNote}
-          </p>
-        </div>
-      )}
     </div>
   );
 }
