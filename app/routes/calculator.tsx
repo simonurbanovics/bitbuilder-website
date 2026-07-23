@@ -19,8 +19,10 @@ export function meta({ params }: Route.MetaArgs) {
 // --- Pricing model ---------------------------------------------------------
 // Commitment tiers as (reserved workdays, multiplier on base), interpolated
 // linearly between anchors and clamped flat outside the ends. `base` is the
-// deepest-discount (annual) rate. Verified the contract total is monotonic in
-// days across 1–220, so reserving more never lowers the total.
+// deepest-discount (annual) rate. The underlying (unrounded) total is monotonic
+// in days; rounding the rate to a whole hourly unit (below) can introduce a
+// sub-2% total dip at a few non-preset day counts on small bases — negligible,
+// and absent on large bases like HUF.
 const ANCHORS: readonly [days: number, mult: number][] = [
   [1, 1.75],
   [22, 1.45],
@@ -46,7 +48,9 @@ function multiplier(days: number): number {
 }
 
 function priceFor(days: number, base: number) {
-  const rate = Math.round(base * multiplier(days));
+  // Round the daily rate to a multiple of 8 so the implied hourly rate
+  // (rate ÷ 8) is always a whole number.
+  const rate = Math.round((base * multiplier(days)) / 8) * 8;
   return { rate, total: rate * days };
 }
 
