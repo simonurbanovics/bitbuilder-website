@@ -18,4 +18,8 @@ export default [
     route("contact", "routes/contact.tsx"),
     route("calculator", "routes/calculator.tsx"),
   ]),
+
+  // Standalone full-screen in-browser AI demo — outside the marketing layout
+  // (no header/nav/footer). Hidden: not prerendered, not linked, noindex.
+  route(":lang/assistant", "routes/assistant.tsx"),
 ] satisfies RouteConfig;
