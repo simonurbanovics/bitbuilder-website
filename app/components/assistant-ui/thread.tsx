@@ -154,7 +154,10 @@ const ThreadRoot: FC<{ isEmpty: boolean }> = ({ isEmpty }) => {
             <ThreadScrollToBottom />
             <ThreadFollowupSuggestions />
             <Composer />
-            <AuiIf condition={(s) => isNewChatView(s) && s.composer.isEmpty}>
+            {/* Keep this mounted for the whole new-chat view (not only while
+                the composer is empty) so the first keystroke doesn't unmount it
+                and re-center the column — which shifted the composer down ~8px. */}
+            <AuiIf condition={isNewChatView}>
               <ThreadSuggestions />
             </AuiIf>
           </ThreadPrimitive.ViewportFooter>
