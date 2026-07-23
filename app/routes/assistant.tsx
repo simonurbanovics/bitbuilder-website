@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   AssistantRuntimeProvider,
   useLocalRuntime,
@@ -55,6 +56,61 @@ function loadEngine(): Promise<MLCEngine> {
     })();
   }
   return enginePromise;
+}
+
+// WebLLM persists weights + compiled kernels in Cache Storage (buckets named
+// `webllm/*`), which survives reloads and browser restarts. These helpers let a
+// visitor detect and reclaim that ~0.9 GB without loading the WebLLM library.
+async function hasCachedModel(): Promise<boolean> {
+  try {
+    if (typeof caches === "undefined") return false;
+    const names = await caches.keys();
+    return names.some((n) => n.toLowerCase().includes("webllm"));
+  } catch {
+    return false;
+  }
+}
+
+async function clearDownloadedModel(): Promise<void> {
+  // Free GPU memory first if an engine is live in this session.
+  if (enginePromise) {
+    try {
+      const engine = await enginePromise;
+      await engine.unload();
+    } catch {
+      /* engine may have failed to load; nothing to unload */
+    }
+    enginePromise = null;
+    progressText = "";
+  }
+  // Delete the persisted weights/kernels (default Cache API backend).
+  if (typeof caches !== "undefined") {
+    const names = await caches.keys();
+    await Promise.all(
+      names
+        .filter((n) => n.toLowerCase().includes("webllm"))
+        .map((n) => caches.delete(n)),
+    );
+  }
+  // Belt-and-suspenders: WebLLM can be configured to use IndexedDB instead.
+  if (typeof indexedDB !== "undefined" && "databases" in indexedDB) {
+    try {
+      const dbs = await indexedDB.databases();
+      await Promise.all(
+        dbs
+          .filter((d) => d.name && /webllm|tvmjs/i.test(d.name))
+          .map(
+            (d) =>
+              new Promise<void>((resolve) => {
+                const req = indexedDB.deleteDatabase(d.name!);
+                req.onsuccess = req.onerror = req.onblocked = () => resolve();
+              }),
+          ),
+      );
+    } catch {
+      /* best effort */
+    }
+  }
 }
 
 const adapter: ChatModelAdapter = {
@@ -127,16 +183,49 @@ const adapter: ChatModelAdapter = {
 export default function AssistantRoute({ params }: Route.ComponentProps) {
   const lang = getLang(params.lang);
   const runtime = useLocalRuntime(adapter);
+  const [cached, setCached] = useState(false);
+  const [clearState, setClearState] = useState<"idle" | "clearing" | "cleared">(
+    "idle",
+  );
+
+  useEffect(() => {
+    hasCachedModel().then(setCached);
+  }, []);
+
+  async function handleClear() {
+    setClearState("clearing");
+    await clearDownloadedModel();
+    setCached(false);
+    setClearState("cleared");
+  }
+
+  const showClear = cached || clearState !== "idle";
 
   return (
     <div className="flex h-dvh flex-col bg-white dark:bg-slate-950">
-      <header className="flex items-center justify-between border-b border-slate-200 px-4 py-3 dark:border-slate-800">
+      <header className="flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-3 dark:border-slate-800">
         <Link to={lp(lang, "/")} aria-label={site.name}>
           <Logo />
         </Link>
-        <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
-          runs locally in your browser · no server
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="hidden font-mono text-xs text-slate-500 sm:inline dark:text-slate-400">
+            runs locally in your browser · no server
+          </span>
+          {showClear && (
+            <button
+              type="button"
+              onClick={handleClear}
+              disabled={clearState === "clearing"}
+              className="rounded-md border border-slate-300 px-2.5 py-1 text-xs font-medium text-slate-600 transition-colors hover:border-brand-500 hover:text-brand-700 disabled:opacity-60 dark:border-slate-700 dark:text-slate-300 dark:hover:text-brand-300"
+            >
+              {clearState === "clearing"
+                ? "Clearing…"
+                : clearState === "cleared"
+                  ? "Model cleared"
+                  : "Clear downloaded model"}
+            </button>
+          )}
+        </div>
       </header>
       <AssistantRuntimeProvider runtime={runtime}>
         <div className="min-h-0 flex-1">
