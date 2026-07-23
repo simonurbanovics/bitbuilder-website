@@ -155,6 +155,11 @@ export default function Calculator() {
             <span className="text-slate-300 dark:text-slate-600">—</span>
           )}
         </div>
+        {hasDays && (
+          <p className="mt-1 font-mono text-sm text-slate-400 dark:text-slate-500">
+            {money(rate / 8)} {c.perHour}
+          </p>
+        )}
 
         <div className="mt-6 flex items-baseline justify-between border-t border-slate-200 pt-6 dark:border-slate-800">
           <span className="text-sm font-medium text-slate-500 dark:text-slate-400">

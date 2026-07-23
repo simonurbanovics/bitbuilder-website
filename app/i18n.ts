@@ -149,6 +149,7 @@ type Dict = {
     };
     rateLabel: string;
     perDay: string;
+    perHour: string;
     totalLabel: string;
     metaDesc: string;
   };
@@ -310,6 +311,7 @@ const en: Dict = {
     },
     rateLabel: "Daily rate",
     perDay: "/ day",
+    perHour: "/ hr",
     totalLabel: "Contract total",
     metaDesc: "BitBuilder engagement rate calculator.",
   },
@@ -471,6 +473,7 @@ const hu: Dict = {
     },
     rateLabel: "Napidíj",
     perDay: "/ nap",
+    perHour: "/ óra",
     totalLabel: "Szerződés összesen",
     metaDesc: "BitBuilder napidíj-kalkulátor.",
   },
